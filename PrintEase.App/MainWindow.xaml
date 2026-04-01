@@ -1,0 +1,313 @@
+<Window x:Class="PrintEase.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="PrintEase"
+        Width="780"
+        Height="540"
+        MinWidth="780"
+        MaxWidth="780"
+        MinHeight="540"
+        MaxHeight="540"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="#FF151A23"
+        Foreground="#FFF3F6FA">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="44"
+                            ResizeBorderThickness="0"
+                            CornerRadius="0"
+                            GlassFrameThickness="0"
+                            UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="WindowInnerBrush" Color="#FF151A23" />
+        <SolidColorBrush x:Key="CardBrush" Color="#FF1C2230" />
+        <SolidColorBrush x:Key="ControlBrush" Color="#FF2A3140" />
+        <SolidColorBrush x:Key="ControlHoverBrush" Color="#FF2B3446" />
+        <SolidColorBrush x:Key="ControlPressedBrush" Color="#FF3A4660" />
+        <SolidColorBrush x:Key="BorderBrush" Color="#FF3A445B" />
+        <SolidColorBrush x:Key="SubtleBrush" Color="#FFB9C4D5" />
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource ControlBrush}" />
+            <Setter Property="Foreground" Value="#FFF3F6FA" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ControlHoverBrush}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ControlPressedBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TitleBarButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="44" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="6,0,0,0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="#FFF3F6FA" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF273448" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FF1E2A3B" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+            <Setter Property="Foreground" Value="#FFE45A5A" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF4C1010" />
+                    <Setter Property="Foreground" Value="#FFFF6A6A" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FF3A0C0C" />
+                    <Setter Property="Foreground" Value="#FFFF7474" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DarkComboBoxToggleButton" TargetType="ToggleButton">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <Path HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Fill="#FFD7DFEC"
+                                      Data="M 0 0 L 6 0 L 3 4 Z" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="{StaticResource ControlBrush}" />
+            <Setter Property="Foreground" Value="#FFF3F6FA" />
+            <Setter Property="Padding" Value="10,6" />
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ControlHoverBrush}" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FF2F6CA5" />
+                    <Setter Property="Foreground" Value="#FFFFFFFF" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{StaticResource ControlBrush}" />
+            <Setter Property="Foreground" Value="#FFF3F6FA" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="36" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter Margin="10,0,6,0"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  RecognizesAccessKey="True" />
+                            </Border>
+
+                            <ToggleButton Grid.Column="1"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Style="{StaticResource DarkComboBoxToggleButton}" />
+
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Border Background="{StaticResource ControlBrush}"
+                                        BorderBrush="{StaticResource BorderBrush}"
+                                        BorderThickness="1"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ScrollViewer MaxHeight="220" CanContentScroll="True">
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ControlHoverBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource WindowInnerBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Background="#FF1A2030"
+              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                <TextBlock Text="PrintEase" FontSize="16" FontWeight="Bold" />
+                <TextBlock Text="  |  Printer recovery utility" Foreground="{StaticResource SubtleBrush}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                <Button Style="{StaticResource TitleBarButtonStyle}" Content="-" Click="MinimizeButton_Click" shell:WindowChrome.IsHitTestVisibleInChrome="True" />
+                <Button Style="{StaticResource TitleBarCloseButtonStyle}" Content="X" Click="CloseButton_Click" shell:WindowChrome.IsHitTestVisibleInChrome="True" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Background="#FF225A92"
+                    BorderBrush="#FF2C72B7"
+                    BorderThickness="1"
+                    Padding="14"
+                    Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="Fix printer connection issues quickly"
+                               FontSize="22"
+                               FontWeight="Bold" />
+                    <TextBlock Text="Detect printer, auto-fix connection, test print"
+                               Margin="0,4,0,0"
+                               Foreground="#FFD8E8FA" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Background="{StaticResource CardBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Padding="12"
+                    Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox x:Name="PrinterComboBox"
+                              DisplayMemberPath="Name"
+                              PreviewMouseLeftButtonDown="PrinterComboBox_PreviewMouseLeftButtonDown"
+                              SelectionChanged="PrinterComboBox_SelectionChanged"
+                              ToolTip="Detected printers over Wi-Fi or USB/cable" />
+
+                    <Button Grid.Column="1"
+                            x:Name="DetectPrintersButton"
+                            Content="Detect Printers"
+                            Margin="10,0,0,0"
+                            Width="162"
+                            Click="DetectPrintersButton_Click"
+                            ToolTip="Scan Windows for connected printers" />
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        Background="{StaticResource CardBrush}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="1"
+                        Padding="12"
+                        Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock x:Name="PrinterInfoText"
+                                   Text="No printer detected yet."
+                                   TextWrapping="Wrap"
+                                   FontWeight="SemiBold" />
+                        <TextBlock x:Name="StatusText"
+                                   Margin="0,8,0,0"
+                                   Foreground="{StaticResource SubtleBrush}"
+                                   Text="Status: click Detect Printers first." />
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Center">
+                            <ProgressBar x:Name="ActionProgressBar"
+                                         Width="180"
+                                         Height="8"
+                                         IsIndeterminate="True"
+                                         Visibility="Collapsed" />
+                            <TextBlock x:Name="ActionStatusText"
+                                       Margin="10,0,0,0"
+                                       Foreground="{StaticResource SubtleBrush}"
+                                       Text="Idle" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Background="{StaticResource CardBrush}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel>
+                        <Button Content="1) Auto Fix And Connect"
+                            x:Name="AutoFixButton"
+                                Margin="0,0,0,10"
+                                Click="AutoFixButton_Click"
+                                ToolTip="Runs recovery steps in order to restore printer connectivity" />
+                        <Button Content="2) Test Print"
+                            x:Name="TestPrintButton"
+                                Click="TestPrintButton_Click"
+                                ToolTip="Sends a test page to the selected printer" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

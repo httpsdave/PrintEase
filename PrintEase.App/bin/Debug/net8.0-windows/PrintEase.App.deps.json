@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "PrintEase.App/1.0.0": {
+        "runtime": {
+          "PrintEase.App.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PrintEase.App/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
