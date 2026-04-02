@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using PrintEase.App.Models;
 using PrintEase.App.Services;
 
@@ -37,13 +39,7 @@ public partial class MainWindow : Window
         {
             var previousName = SelectedPrinter()?.Name;
             _printers = await Task.Run(() => _printerManager.GetPrinters().ToList());
-            var onlinePrinters = _printers.Where(p => p.IsOnline).ToList();
-            var likelyAvailablePrinters = _printers.Where(p => !p.IsOffline).ToList();
-            var displayPrinters = onlinePrinters.Count > 0
-                ? onlinePrinters
-                : likelyAvailablePrinters.Count > 0
-                    ? likelyAvailablePrinters
-                    : _printers;
+            var displayPrinters = _printers;
 
             PrinterComboBox.ItemsSource = displayPrinters;
 
@@ -63,8 +59,11 @@ public partial class MainWindow : Window
 
             UpdatePrinterInfo(selected);
             var connection = selected.ConnectionType;
-            StatusText.Text = $"Status: detected {selected.Name} via {connection}.";
-            ActionStatusText.Text = $"Detected {selected.Name}.";
+            var onlineCount = _printers.Count(p => p.IsOnline);
+            var offlineCount = _printers.Count(p => p.IsOffline);
+            var unknownCount = _printers.Count - onlineCount - offlineCount;
+            StatusText.Text = $"Status: selected {selected.Name} via {connection} ({selected.OnlineStatus.ToLowerInvariant()}).";
+            ActionStatusText.Text = $"Detected {_printers.Count} printers: {onlineCount} online, {offlineCount} offline, {unknownCount} unknown.";
             _diagnostics.Info($"Detected printer {selected.Name} ({connection})");
         }
         catch (Exception ex)
@@ -225,5 +224,21 @@ public partial class MainWindow : Window
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private void SupportLink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri)
+            {
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            _diagnostics.Error("Failed to open support link", ex);
+            StatusText.Text = "Status: unable to open support link.";
+        }
     }
 }

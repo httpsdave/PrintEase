@@ -36,8 +36,8 @@ Create:
 - Create and push a version tag, for example:
 
 ```powershell
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.1
+git push origin v1.0.1
 ```
 
 The workflow file `.github/workflows/release.yml` will:

@@ -1,7 +1,7 @@
 #define MyAppName "PrintEase"
-#define MyAppVersion "1.0.0"
-#define MyAppPublisher "Your Company Name"
-#define MyAppURL "https://example.com/printease"
+#define MyAppVersion "1.0.1"
+#define MyAppPublisher "httpsdave"
+#define MyAppURL "https://github.com/httpsdave/PrintEase"
 #define MyAppExeName "PrintEase.App.exe"
 
 [Setup]
@@ -20,8 +20,8 @@ OutputBaseFilename=PrintEase-Setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64os
 
 ; Optional when you provide real icon file:
 ; SetupIconFile=..\assets\logo.ico

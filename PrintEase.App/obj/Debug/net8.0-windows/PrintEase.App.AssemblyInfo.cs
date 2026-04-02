@@ -10,11 +10,13 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("PrintEase.App")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("httpsdave")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright (c) 2026 httpsdave")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("Utility application to detect and fix common printer connection issues.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("PrintEase.App")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+143b024ace27d11875fd7d951551ad95c9190035")]
+[assembly: System.Reflection.AssemblyProductAttribute("PrintEase Printer Recovery Utility")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PrintEase.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]

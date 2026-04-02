@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Printing;
 using System.Windows;
@@ -22,12 +23,14 @@ public sealed class PrinterManager
             .Select(queue =>
             {
                 var portName = queue.QueuePort?.Name ?? "Unknown";
+                var printerName = queue.Name ?? string.Empty;
                 var (isOnline, isOffline) = DetermineAvailability(queue, portName);
                 return new PrinterDevice
                 {
-                    Name = queue.Name,
+                    Name = printerName,
                     PortName = portName,
                     IsNetwork = IsNetworkPrinter(portName),
+                    IsVirtual = IsVirtualPrinter(printerName, portName),
                     IsOnline = isOnline,
                     IsOffline = isOffline,
                     IsDefault = string.Equals(defaultPrinter, queue.Name, StringComparison.OrdinalIgnoreCase)
@@ -162,24 +165,25 @@ public sealed class PrinterManager
 
         if (IsNetworkPrinter(portName))
         {
+            var host = TryExtractNetworkHost(portName, queue);
+            if (!string.IsNullOrWhiteSpace(host) && !CanReachPrinterHost(host))
+            {
+                return (false, true);
+            }
+
             try
             {
                 queue.GetPrintCapabilities();
             }
             catch
             {
-                return (false, true);
-            }
-
-            var host = TryExtractNetworkHost(portName, queue);
-            if (!string.IsNullOrWhiteSpace(host) && !CanPingHost(host))
-            {
-                return (false, true);
+                // If host is known and capabilities fail, treat as offline; otherwise leave unknown.
+                return string.IsNullOrWhiteSpace(host) ? (false, false) : (false, true);
             }
 
             if (string.IsNullOrWhiteSpace(host))
             {
-                // Some stale network printers report no error flags, so keep them out of Online when host cannot be resolved.
+                // Keep unresolved network queues as unknown, not hard-offline.
                 return (false, false);
             }
 
@@ -250,6 +254,17 @@ public sealed class PrinterManager
             ?? ExtractHost(queue.Location);
     }
 
+    private static bool CanReachPrinterHost(string host)
+    {
+        if (CanPingHost(host))
+        {
+            return true;
+        }
+
+        // Many printers block ping but keep raw/IPP ports reachable.
+        return CanConnectTcp(host, 9100, 900) || CanConnectTcp(host, 631, 900);
+    }
+
     private static bool CanPingHost(string host)
     {
         try
@@ -257,6 +272,21 @@ public sealed class PrinterManager
             using var ping = new Ping();
             var reply = ping.Send(host, 800);
             return reply is not null && reply.Status == IPStatus.Success;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool CanConnectTcp(string host, int port, int timeoutMs)
+    {
+        try
+        {
+            using var client = new TcpClient();
+            var connectTask = client.ConnectAsync(host, port);
+            var completed = connectTask.Wait(timeoutMs);
+            return completed && client.Connected;
         }
         catch
         {

@@ -17,3 +17,4 @@ D:\PrintEase\PrintEase.App\obj\Debug\net8.0-windows\refint\PrintEase.App.dll
 D:\PrintEase\PrintEase.App\obj\Debug\net8.0-windows\PrintEase.App.pdb
 D:\PrintEase\PrintEase.App\obj\Debug\net8.0-windows\PrintEase.App.genruntimeconfig.cache
 D:\PrintEase\PrintEase.App\obj\Debug\net8.0-windows\ref\PrintEase.App.dll
+D:\PrintEase\PrintEase.App\obj\Debug\net8.0-windows\PrintEase.App.sourcelink.json

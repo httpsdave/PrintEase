@@ -1,0 +1,14 @@
+# Build outputs
+**/bin/
+**/obj/
+
+# Installer artifacts
+installer/Output/
+
+# User and IDE files
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log

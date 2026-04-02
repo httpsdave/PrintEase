@@ -5,6 +5,7 @@ public sealed class PrinterDevice
     public required string Name { get; init; }
     public required string PortName { get; init; }
     public bool IsNetwork { get; init; }
+    public bool IsVirtual { get; init; }
     public bool IsOnline { get; init; }
     public bool IsOffline { get; init; }
     public bool IsDefault { get; init; }
