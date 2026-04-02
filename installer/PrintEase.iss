@@ -1,5 +1,5 @@
 #define MyAppName "PrintEase"
-#define MyAppVersion "1.0.4"
+#define MyAppVersion "1.0.5"
 #define MyAppPublisher "httpsdave"
 #define MyAppURL "https://github.com/httpsdave/PrintEase"
 #define MyAppExeName "PrintEase.App.exe"
@@ -23,8 +23,7 @@ WizardStyle=modern
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64os
 
-; Optional when you provide real icon file:
-; SetupIconFile=..\assets\logo.ico
+SetupIconFile=..\assets\icon-multisize-16-256-main.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
