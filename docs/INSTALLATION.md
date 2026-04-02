@@ -107,7 +107,7 @@ Diagnostics storage behavior:
 ## 11. GitHub release automation
 
 - Workflow file: `.github/workflows/release.yml`
-- Trigger: push a semantic tag like `v1.0.1`
+- Trigger: push a semantic tag like `v1.0.2`
 - Optional signing secrets:
    - `SIGN_CERT_BASE64`
    - `SIGN_CERT_PASSWORD`
