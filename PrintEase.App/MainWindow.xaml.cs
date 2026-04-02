@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -449,13 +450,40 @@ public partial class MainWindow : Window
 
         _trayIcon = new Forms.NotifyIcon
         {
-            Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? System.Drawing.SystemIcons.Application,
+            Icon = ResolveTrayIcon(),
             Text = "PrintEase",
             ContextMenuStrip = menu,
             Visible = false
         };
 
         _trayIcon.DoubleClick += (_, _) => Dispatcher.Invoke(RestoreFromTray);
+    }
+
+    private static System.Drawing.Icon ResolveTrayIcon()
+    {
+        try
+        {
+            var baseDirExe = Path.Combine(AppContext.BaseDirectory, "PrintEase.App.exe");
+            var candidatePath =
+                Environment.ProcessPath
+                ?? Process.GetCurrentProcess().MainModule?.FileName
+                ?? (File.Exists(baseDirExe) ? baseDirExe : null);
+
+            if (!string.IsNullOrWhiteSpace(candidatePath) && File.Exists(candidatePath))
+            {
+                var icon = System.Drawing.Icon.ExtractAssociatedIcon(candidatePath);
+                if (icon is not null)
+                {
+                    return icon;
+                }
+            }
+        }
+        catch
+        {
+            // Fall back to a safe system icon if executable icon resolution fails.
+        }
+
+        return System.Drawing.SystemIcons.Application;
     }
 
     private void DisposeTrayIcon()
