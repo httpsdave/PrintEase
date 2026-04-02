@@ -35,8 +35,3 @@ PrintEase helps you:
 Download the Windows installer from GitHub Releases:
 
 - [Download PrintEase Installer (PrintEase-Setup.exe)](https://github.com/httpsdave/PrintEase/releases/latest/download/PrintEase-Setup.exe)
-
-All releases are also available on the Releases page:
-
-- [PrintEase Releases](https://github.com/httpsdave/PrintEase/releases)
-- [PrintEase v1.0.4](https://github.com/httpsdave/PrintEase/releases/tag/v1.0.4)
