@@ -30,20 +30,12 @@ PrintEase helps you:
 | ![WPF](https://img.shields.io/badge/WPF-0C7CD5?logo=windows&logoColor=white) | WPF | Native Windows desktop UI |
 | ![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white) | Windows Print APIs | Printer and queue integration |
 
-## Run Locally
+## Download
 
-```powershell
-dotnet build .\PrintEase.sln
-dotnet run --project .\PrintEase.App\PrintEase.App.csproj
-```
+Download the Windows installer from GitHub Releases:
 
-## Build Installer
+- [Download PrintEase Installer (PrintEase-Setup.exe)](https://github.com/httpsdave/PrintEase/releases/latest/download/PrintEase-Setup.exe)
 
-```powershell
-.\scripts\build-installer.ps1
-```
+All releases are also available on the Releases page:
 
-Additional installer and release documentation:
-
-- `docs/INSTALLATION.md`
-- `docs/SIGNED_RELEASES.md`
+- [PrintEase Releases](https://github.com/httpsdave/PrintEase/releases)
