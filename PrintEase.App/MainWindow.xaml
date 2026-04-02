@@ -208,6 +208,53 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="GreenButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#FF2B7A3B" />
+            <Setter Property="BorderBrush" Value="#FF3E9E54" />
+            <Setter Property="Foreground" Value="#FFFFFFFF" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF358C46" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FF236430" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="HelpCircleButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#FF253144" />
+            <Setter Property="BorderBrush" Value="#FF4D617F" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF2F3E56" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FF202B3B" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid Background="{StaticResource WindowInnerBrush}">
@@ -230,6 +277,28 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                <Button x:Name="SettingsButton"
+                        Style="{StaticResource TitleBarButtonStyle}"
+                        Content="&#xE713;"
+                        FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                        FontSize="14"
+                        Click="SettingsButton_Click"
+                        ToolTip="Application settings"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Close minimizes to tray"
+                                      x:Name="CloseToTrayMenuItem"
+                                      IsCheckable="True"
+                                      Click="CloseToTrayMenuItem_Click" />
+                            <MenuItem Header="Close exits application"
+                                      x:Name="CloseExitMenuItem"
+                                      IsCheckable="True"
+                                      IsChecked="True"
+                                      Click="CloseExitMenuItem_Click" />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
                 <Button Style="{StaticResource TitleBarButtonStyle}" Content="-" Click="MinimizeButton_Click" shell:WindowChrome.IsHitTestVisibleInChrome="True" />
                 <Button Style="{StaticResource TitleBarCloseButtonStyle}" Content="X" Click="CloseButton_Click" shell:WindowChrome.IsHitTestVisibleInChrome="True" />
             </StackPanel>
@@ -244,11 +313,17 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
-                    Background="#FF225A92"
                     BorderBrush="#FF2C72B7"
-                    BorderThickness="1"
+                    BorderThickness="1,1,0,1"
                     Padding="14"
                     Margin="0,0,0,12">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                        <GradientStop Color="#FF225A92" Offset="0.0" />
+                        <GradientStop Color="#FF225A92" Offset="0.6" />
+                        <GradientStop Color="#FFFFFFFF" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
                 <StackPanel>
                     <TextBlock Text="Fix printer connection issues quickly"
                                FontSize="22"
@@ -279,6 +354,7 @@
 
                     <Button Grid.Column="1"
                             x:Name="DetectPrintersButton"
+                            Style="{StaticResource GreenButtonStyle}"
                             Content="Detect Printers"
                             Margin="10,0,0,0"
                             Width="162"
@@ -328,15 +404,43 @@
                         BorderThickness="1"
                         Padding="12">
                     <StackPanel>
-                        <Button Content="1) Auto Fix And Connect"
-                            x:Name="AutoFixButton"
-                                Margin="0,0,0,10"
-                                Click="AutoFixButton_Click"
-                                ToolTip="Runs recovery steps in order to restore printer connectivity" />
-                        <Button Content="2) Test Print"
-                            x:Name="TestPrintButton"
-                                Click="TestPrintButton_Click"
-                                ToolTip="Sends a test page to the selected printer" />
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0"
+                                    Content="1) Auto Fix And Connect"
+                                    x:Name="AutoFixButton"
+                                    Click="AutoFixButton_Click"
+                                    ToolTip="Runs recovery steps in order to restore printer connectivity" />
+                            <Button Grid.Column="1"
+                                    x:Name="AutoFixHelpButton"
+                                    Style="{StaticResource HelpCircleButtonStyle}"
+                                    Content="?"
+                                    Click="AutoFixHelpButton_Click"
+                                    ToolTip="See the automated Auto Fix and Connect steps" />
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0"
+                                    Content="2) Test Print"
+                                    x:Name="TestPrintButton"
+                                    Click="TestPrintButton_Click"
+                                    ToolTip="Sends a test page to the selected printer" />
+                            <Button Grid.Column="1"
+                                    x:Name="TestPrintHelpButton"
+                                    Style="{StaticResource HelpCircleButtonStyle}"
+                                    Content="?"
+                                    Click="TestPrintHelpButton_Click"
+                                    ToolTip="See what happens during Test Print" />
+                        </Grid>
                     </StackPanel>
                 </Border>
             </Grid>

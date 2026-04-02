@@ -2,7 +2,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Message,
 
-    [string]$Version = "1.0.1",
+    [string]$Version = "1.0.4",
 
     [switch]$PushTag
 )

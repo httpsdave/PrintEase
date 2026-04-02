@@ -1,5 +1,5 @@
 #define MyAppName "PrintEase"
-#define MyAppVersion "1.0.3"
+#define MyAppVersion "1.0.4"
 #define MyAppPublisher "httpsdave"
 #define MyAppURL "https://github.com/httpsdave/PrintEase"
 #define MyAppExeName "PrintEase.App.exe"

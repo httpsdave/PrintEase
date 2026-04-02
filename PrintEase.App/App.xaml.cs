@@ -7,19 +7,19 @@ namespace PrintEase.App;
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     public App()
     {
         DispatcherUnhandledException += (s, e) =>
         {
-            MessageBox.Show($"Startup crash:\n{e.Exception}", "PrintEase Error");
+            System.Windows.MessageBox.Show($"Startup crash:\n{e.Exception}", "PrintEase Error");
             e.Handled = false;
         };
         
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
-            MessageBox.Show($"Unhandled exception:\n{e.ExceptionObject}", "PrintEase Error");
+            System.Windows.MessageBox.Show($"Unhandled exception:\n{e.ExceptionObject}", "PrintEase Error");
         };
     }
 }

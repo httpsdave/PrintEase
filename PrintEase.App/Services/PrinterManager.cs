@@ -9,6 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using PrintEase.App.Models;
+using PrintDialog = System.Windows.Controls.PrintDialog;
+using FontFamily = System.Windows.Media.FontFamily;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace PrintEase.App.Services;
 
