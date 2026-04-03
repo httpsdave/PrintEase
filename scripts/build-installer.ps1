@@ -3,7 +3,8 @@ param(
     [string]$Configuration = "Release",
     [string]$CertificatePath = "",
     [string]$CertificatePassword = "",
-    [string]$TimestampUrl = "http://timestamp.digicert.com"
+    [string]$TimestampUrl = "https://timestamp.digicert.com",
+    [switch]$RequireSigning
 )
 
 $ErrorActionPreference = "Stop"
@@ -71,6 +72,10 @@ if (-not (Test-Path $publishDir)) {
 
 $appExePath = Join-Path $publishDir "PrintEase.App.exe"
 
+if ($RequireSigning -and [string]::IsNullOrWhiteSpace($CertificatePath)) {
+    throw "Signing is required, but no certificate path was provided."
+}
+
 if (-not [string]::IsNullOrWhiteSpace($CertificatePath)) {
     if (-not (Test-Path $CertificatePath)) {
         throw "Certificate file not found: $CertificatePath"
@@ -83,6 +88,11 @@ if (-not [string]::IsNullOrWhiteSpace($CertificatePath)) {
 
     Write-Host "Signing application binary..."
     Invoke-CodeSign -SignTool $signTool -FilePath $appExePath -CertPath $CertificatePath -CertPassword $CertificatePassword -TsUrl $TimestampUrl
+
+    $appSignature = Get-AuthenticodeSignature $appExePath
+    if ($appSignature.Status -ne "Valid") {
+        throw "Application signature is not valid: $($appSignature.Status)"
+    }
 }
 
 $innoFromPath = Get-Command ISCC.exe -ErrorAction SilentlyContinue
@@ -109,6 +119,14 @@ if (-not (Test-Path $installerPath)) {
 if (-not [string]::IsNullOrWhiteSpace($CertificatePath)) {
     Write-Host "Signing installer..."
     Invoke-CodeSign -SignTool $signTool -FilePath $installerPath -CertPath $CertificatePath -CertPassword $CertificatePassword -TsUrl $TimestampUrl
+
+    $installerSignature = Get-AuthenticodeSignature $installerPath
+    if ($installerSignature.Status -ne "Valid") {
+        throw "Installer signature is not valid: $($installerSignature.Status)"
+    }
+}
+elseif ($RequireSigning) {
+    throw "Signing is required, but certificate information was not provided."
 }
 
 Write-Host "Installer created: $installerPath"

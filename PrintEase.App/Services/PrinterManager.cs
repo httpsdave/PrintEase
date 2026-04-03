@@ -399,8 +399,8 @@ public sealed class PrinterManager
     public async Task<string> RestartSpoolerAsync()
     {
         // Restarting the spooler clears stale jobs/drivers that often block cancellation.
-        var stopResult = await RunShellCommandAsync("sc stop spooler");
-        var startResult = await RunShellCommandAsync("sc start spooler");
+        var stopResult = await RunCommandAsync("sc.exe", "stop spooler");
+        var startResult = await RunCommandAsync("sc.exe", "start spooler");
         return $"Stop spooler: {stopResult}\nStart spooler: {startResult}";
     }
 
@@ -527,14 +527,14 @@ public sealed class PrinterManager
         return document;
     }
 
-    private static async Task<string> RunShellCommandAsync(string command)
+    private static async Task<string> RunCommandAsync(string fileName, string arguments)
     {
         var process = new Process
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "cmd.exe",
-                Arguments = $"/c {command}",
+                FileName = fileName,
+                Arguments = arguments,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true,

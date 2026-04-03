@@ -29,9 +29,37 @@ jobs:
       - name: Install Inno Setup
         run: choco install innosetup --no-progress -y
 
+      - name: Validate signing secrets
+        shell: pwsh
+        env:
+          SIGN_CERT_BASE64: ${{ secrets.SIGN_CERT_BASE64 }}
+          SIGN_CERT_PASSWORD: ${{ secrets.SIGN_CERT_PASSWORD }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:SIGN_CERT_BASE64) -or [string]::IsNullOrWhiteSpace($env:SIGN_CERT_PASSWORD)) {
+            throw "SIGN_CERT_BASE64 and SIGN_CERT_PASSWORD are required for release builds."
+          }
+
+      - name: Decode signing certificate
+        shell: pwsh
+        env:
+          SIGN_CERT_BASE64: ${{ secrets.SIGN_CERT_BASE64 }}
+        run: |
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\codesign.pfx", [Convert]::FromBase64String($env:SIGN_CERT_BASE64))
+
       - name: Build installer
         shell: pwsh
-        run: .\scripts\build-installer.ps1 -Runtime win-x64 -Configuration Release
+        env:
+          SIGN_CERT_PASSWORD: ${{ secrets.SIGN_CERT_PASSWORD }}
+        run: .\scripts\build-installer.ps1 -Runtime win-x64 -Configuration Release -CertificatePath "$env:RUNNER_TEMP\codesign.pfx" -CertificatePassword "$env:SIGN_CERT_PASSWORD" -RequireSigning
+
+      - name: Remove certificate file
+        if: always()
+        shell: pwsh
+        run: |
+          $certPath = "$env:RUNNER_TEMP\codesign.pfx"
+          if (Test-Path $certPath) {
+            Remove-Item $certPath -Force
+          }
 
       - name: Create release
         uses: softprops/action-gh-release@v2

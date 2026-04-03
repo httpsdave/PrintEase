@@ -44,7 +44,7 @@ The workflow file `.github/workflows/release.yml` will:
 
 1. Build app and installer
 2. Decode certificate secret to temporary PFX
-3. Sign installer with signtool
+3. Sign app and installer with signtool
 4. Publish release assets to GitHub Releases
 
 ## 5) Validate signature on downloaded installer
@@ -57,6 +57,6 @@ Get-AuthenticodeSignature .\PrintEase-Setup.exe | Format-List *
 
 Status should report `Valid`.
 
-## 6) If signing is skipped
+## 6) If signing fails
 
-Signing is skipped when secrets are missing or empty. Ensure both secrets are present and re-run via a new tag.
+Signing is now required for release workflow runs. If the certificate secrets are missing, invalid, or produce a non-valid Authenticode signature, the workflow fails immediately and no release artifacts are published.
