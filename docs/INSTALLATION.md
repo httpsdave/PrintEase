@@ -97,6 +97,7 @@ Diagnostics storage behavior:
    2. spooler restart
    3. optional queue purge confirmation
    4. post-check with status update
+   5. if still failing, remove/forget the printer in Windows and add it again
 
 ## 12. Print size and file support
 

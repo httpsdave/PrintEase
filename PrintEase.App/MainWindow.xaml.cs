@@ -207,6 +207,11 @@ public partial class MainWindow : Window
                     ? $"Auto-fix completed successfully for {selected.Name}.\n\nResult: {afterReason}"
                     : $"Auto-fix completed but connection is still failing for {selected.Name}.\n\nLatest status: {afterReason}",
                 success: healthyAfter);
+
+            if (!healthyAfter)
+            {
+                ShowManualReconnectGuidance(selected.Name, afterReason);
+            }
         }
         catch (Exception ex)
         {
@@ -290,9 +295,32 @@ public partial class MainWindow : Window
             "3. Attempts to resume the printer queue.\n" +
             "4. Clears stuck print jobs when possible.\n" +
             "5. Re-detects printers and refreshes selection.\n" +
-            "6. Re-tests connection and reports final status.";
+            "6. Re-tests connection and reports final status.\n" +
+            "7. If still failing, remove/forget the printer in Windows and add it again.";
 
         System.Windows.MessageBox.Show(message, "What Auto Fix And Connect Does", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private void ShowManualReconnectGuidance(string printerName, string latestStatus)
+    {
+        var response = System.Windows.MessageBox.Show(
+            $"Auto-fix finished but {printerName} is still failing.\n\n" +
+            $"Latest status: {latestStatus}\n\n" +
+            "Recommended next step:\n" +
+            "1. Open Windows printer settings.\n" +
+            "2. Remove/forget this printer.\n" +
+            "3. Add the printer again, then run Detect Printers and Test Print.\n\n" +
+            "Open Windows Printers settings now?",
+            "Manual Reconnect Recommended",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (response == MessageBoxResult.Yes)
+        {
+            _printerManager.OpenPrintersSettings();
+            StatusText.Text = "Status: opened Windows Printers settings for remove/re-add workflow.";
+            ActionStatusText.Text = "Manual reconnect step opened.";
+        }
     }
 
     private void TestPrintHelpButton_Click(object sender, RoutedEventArgs e)

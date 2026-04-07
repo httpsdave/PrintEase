@@ -396,6 +396,15 @@ public sealed class PrinterManager
         });
     }
 
+    public void OpenPrintersSettings()
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = "ms-settings:printers",
+            UseShellExecute = true
+        });
+    }
+
     public async Task<string> RestartSpoolerAsync()
     {
         // Restarting the spooler clears stale jobs/drivers that often block cancellation.

@@ -17,6 +17,7 @@ PrintEase helps you:
 
 - Printer detection with status visibility
 - Auto-fix and reconnect workflow
+- Manual fallback guidance to remove/forget and re-add a printer when reconnect still fails
 - Queue control (resume, clear stuck jobs)
 - Test print action for quick verification
 - Built-in diagnostics/logging support
